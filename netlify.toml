@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Fallback para SPA. Mantém a aplicação acessível caso futuramente
+# sejam adicionadas rotas no React.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
