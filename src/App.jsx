@@ -16,7 +16,7 @@ import {
 } from 'recharts'
 import { supabase, supabaseConfigured } from './supabase'
 
-const THEME_KEY = 'dashboard-financeiro-theme-v3'
+const THEME_KEY = 'dashboard-financeiro-theme-v4-dark'
 
 const categoryOptions = {
   receita: ['Salário', 'Freelance', 'Renda extra', 'Reembolso', 'Outros'],
@@ -98,7 +98,7 @@ function ProgressLine({ label, current, target, inverse = false }) {
 
 function SetupScreen() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f6f8fc] px-4 text-slate-950 dark:bg-slate-950 dark:text-white">
+    <div className="flex min-h-screen items-center justify-center bg-[#f6f8fc] px-4 text-slate-950 dark:bg-[#02040a] dark:text-white">
       <div className="card w-full max-w-2xl p-7 md:p-10">
         <div className="text-xs font-bold uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-400">Configuração necessária</div>
         <h1 className="mt-2 text-3xl font-extrabold">Conecte o Supabase</h1>
@@ -116,9 +116,9 @@ function SetupScreen() {
 
 function LoginScreen({ busy, error, onLogin }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f6f8fc] px-4 text-slate-950 dark:bg-slate-950 dark:text-white">
-      <div className="grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-2xl shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none md:grid-cols-[1.1fr_.9fr]">
-        <div className="hidden min-h-[560px] bg-slate-950 p-10 text-white md:flex md:flex-col md:justify-between">
+    <div className="flex min-h-screen items-center justify-center bg-[#f6f8fc] px-4 text-slate-950 dark:bg-[#02040a] dark:text-white">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-2xl shadow-slate-200/60 dark:border-slate-800/80 dark:bg-[#080d18] dark:shadow-[0_24px_80px_rgba(0,0,0,0.45)] md:grid-cols-[1.1fr_.9fr]">
+        <div className="hidden min-h-[560px] bg-[#02040a] p-10 text-white md:flex md:flex-col md:justify-between">
           <div>
             <div className="text-xs font-bold uppercase tracking-[0.24em] text-indigo-300">Dashboard Financeiro</div>
             <h1 className="mt-5 max-w-md text-4xl font-extrabold leading-tight">Suas finanças salvas com segurança na nuvem.</h1>
@@ -136,7 +136,7 @@ function LoginScreen({ busy, error, onLogin }) {
             <h2 className="mt-2 text-3xl font-extrabold">Entrar no dashboard</h2>
             <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">Use sua conta Google. O dashboard não recebe nem armazena sua senha do Google.</p>
             {error && <div className="mt-5 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700 dark:border-rose-900 dark:bg-rose-950/50 dark:text-rose-300">{error}</div>}
-            <button onClick={onLogin} disabled={busy} className="mt-7 flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-bold text-slate-800 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800">
+            <button onClick={onLogin} disabled={busy} className="mt-7 flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-bold text-slate-800 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-[#02040a] dark:text-white dark:hover:bg-slate-800/80">
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-base font-extrabold text-slate-900">G</span>
               {busy ? 'Abrindo Google...' : 'Continuar com Google'}
             </button>
@@ -160,7 +160,7 @@ function App() {
   const [dataError, setDataError] = useState('')
   const [month, setMonth] = useState(now.getMonth())
   const [year, setYear] = useState(now.getFullYear())
-  const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || 'light')
+  const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || 'dark')
   const [formMode, setFormMode] = useState('single')
   const [form, setForm] = useState({ date: toInputDate(now), description: '', category: 'Salário', type: 'receita', account: 'Pessoal', amount: '', recurringEnd: '', installmentCount: '2' })
   const [editingId, setEditingId] = useState(null)
@@ -652,7 +652,7 @@ function App() {
   }
 
   if (!supabaseConfigured) return <SetupScreen />
-  if (authLoading) return <div className="flex min-h-screen items-center justify-center bg-[#f6f8fc] text-sm text-slate-500 dark:bg-slate-950">Carregando sessão...</div>
+  if (authLoading) return <div className="flex min-h-screen items-center justify-center bg-[#f6f8fc] text-sm text-slate-500 dark:bg-[#030712]">Carregando sessão...</div>
   if (!session) return <LoginScreen busy={authBusy} error={authError} onLogin={loginWithGoogle} />
 
   const healthLabel = totals.health >= 80 ? 'Excelente' : totals.health >= 65 ? 'Boa' : totals.health >= 45 ? 'Atenção' : totals.health > 0 ? 'Crítica' : 'Sem dados'
@@ -660,7 +660,7 @@ function App() {
   const avatar = session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture
 
   return (
-    <div className="min-h-screen bg-[#f6f8fc] text-slate-950 transition-colors dark:bg-slate-950 dark:text-white">
+    <div className="min-h-screen bg-[#f6f8fc] text-slate-950 transition-colors dark:bg-[#02040a] dark:text-white">
       <div className="mx-auto max-w-[1500px] px-4 py-5 md:px-7 md:py-7">
         <header className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div>
@@ -674,7 +674,7 @@ function App() {
             <div className="ml-0 flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900 md:ml-2">
               {avatar ? <img src={avatar} alt="Avatar" className="h-8 w-8 rounded-full" referrerPolicy="no-referrer" /> : <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">{String(userName).slice(0,1).toUpperCase()}</div>}
               <div className="hidden max-w-40 sm:block"><div className="truncate text-xs font-bold">{userName}</div><div className="truncate text-[10px] text-slate-400">{session.user.email}</div></div>
-              <button onClick={signOut} className="rounded-xl px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100 hover:text-rose-600 dark:hover:bg-slate-800">Sair</button>
+              <button onClick={signOut} className="rounded-xl px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100 hover:text-rose-600 dark:hover:bg-slate-800/80">Sair</button>
             </div>
           </div>
         </header>
@@ -724,7 +724,7 @@ function App() {
                 <button type="submit" disabled={goalSaving} className="btn-primary disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-3 xl:col-span-1">{goalSaving ? 'Salvando metas...' : 'Salvar metas do mês'}</button>
               </form>
             </div>
-            <div className="grid gap-5 rounded-2xl border border-slate-100 bg-slate-50/70 p-5 dark:border-slate-800 dark:bg-slate-950/40">
+            <div className="grid gap-5 rounded-2xl border border-slate-100 bg-slate-50/70 p-5 dark:border-slate-800 dark:bg-black/25">
               <ProgressLine label="Entradas" current={totals.income} target={currentGoal?.incomeTarget || 0} />
               <ProgressLine label="Despesas" current={totals.expense} target={currentGoal?.expenseLimit || 0} inverse />
               <ProgressLine label="Economia" current={Math.max(0, totals.balance)} target={currentGoal?.savingsTarget || 0} />
@@ -764,11 +764,11 @@ function App() {
           <form id="transaction-form" onSubmit={submitTransaction} className={`card p-5 md:p-6 ${editingId ? 'ring-2 ring-indigo-500/40' : ''}`}>
             <div className="mb-5 flex items-start justify-between gap-3">
               <div><div className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">{editingId ? 'Edição' : 'Lançamento'}</div><h2 className="mt-1 text-lg font-bold">{editingId ? 'Editar lançamento' : 'Novo lançamento'}</h2><p className="mt-1 text-xs text-slate-500">{editingId ? 'Altere os campos e salve. O registro será atualizado no Supabase.' : 'O lançamento será salvo na sua conta Supabase.'}</p></div>
-              {editingId && <button type="button" onClick={cancelEditing} className="rounded-xl px-3 py-2 text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Cancelar</button>}
+              {editingId && <button type="button" onClick={cancelEditing} className="rounded-xl px-3 py-2 text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/80">Cancelar</button>}
             </div>
             {!editingId && <div className="mb-4">
               <div className="mb-2 text-xs font-semibold text-slate-500">Forma do lançamento</div>
-              <div className="grid grid-cols-3 gap-2 rounded-2xl bg-slate-100 p-1 dark:bg-slate-950">
+              <div className="grid grid-cols-3 gap-2 rounded-2xl bg-slate-100 p-1 dark:bg-[#030712]">
                 {[['single','Único'],['recurring','Recorrente'],['installment','Parcelado']].map(([value,label]) => <button key={value} type="button" onClick={() => setFormMode(value)} className={`rounded-xl px-2 py-2.5 text-xs font-bold transition ${formMode === value ? 'bg-white text-slate-950 shadow dark:bg-slate-800 dark:text-white' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}>{label}</button>)}
               </div>
             </div>}
@@ -835,7 +835,7 @@ function App() {
                   </div>
                 </div>
                 <div className="overflow-hidden rounded-2xl border border-slate-100 dark:border-slate-800">
-                  <div className="grid grid-cols-[90px_1fr_120px] gap-3 border-b border-slate-100 bg-slate-50 px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:border-slate-800 dark:bg-slate-950/50"><span>Data</span><span>Lançamento</span><span className="text-right">Valor</span></div>
+                  <div className="grid grid-cols-[90px_1fr_120px] gap-3 border-b border-slate-100 bg-slate-50 px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:border-slate-800 dark:bg-black/30"><span>Data</span><span>Lançamento</span><span className="text-right">Valor</span></div>
                   <div className="max-h-[360px] divide-y divide-slate-100 overflow-y-auto dark:divide-slate-800">
                     {reportTransactions.length ? reportTransactions.map(t => (
                       <div key={`report-${t.id}`} className="grid grid-cols-[90px_1fr_120px] gap-3 px-4 py-3 text-xs">
